@@ -31,6 +31,8 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 Launch a mini json-server and expose RESTFul API
 
+http://localhost:3001/jobs to view sample data in the browser.
+
 ### `yarn deploy:frontend`
 
 **Note: always run yarn build in order to deploy latest app changes**
