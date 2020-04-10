@@ -17,6 +17,7 @@
     "react-scripts": "3.4.1",
     "react-toastify": "^5.5.0",
     "redux": "^4.0.5",
+    "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
@@ -26,7 +27,6 @@
     "eject": "react-scripts eject",
     "startServer": "node server/server.js",
     "build:production": "env-cmd -f .env.production npm run build"
-
   },
   "eslintConfig": {
     "extends": "react-app"
