@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
+const baseUrl = process.env.REACT_APP_API_URL + "/document/";
 
 const JobList = ( { jobs } ) => (
     <table className="table">
@@ -12,6 +13,7 @@ const JobList = ( { jobs } ) => (
         <th>Description</th>
         <th>Posting Date</th>
         <th>Status</th>
+        <th></th>
         <th />
       </tr>
     </thead>
@@ -26,6 +28,7 @@ const JobList = ( { jobs } ) => (
             <td>{job.description}</td>
             <td>{new Date(job.createdAt).toLocaleDateString()}</td>
             <td>{job.status}</td>
+            {job.fileName && (<td><a target="blank" href={`${baseUrl}${job.fileName}`}>Download</a> </td>)}
             {/* <td>
               <button
                 className="btn btn-outline-danger"

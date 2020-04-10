@@ -2,6 +2,9 @@ import React from "react";
 // import PropTypes from "prop-types";
 import TextInput from "../common/TextInput";
 import SelectInput from "../common/SelectInput";
+import FileInput from "../common/FileInput";
+import { uploadFile } from "../../actions/fileAction";
+import { connect } from "react-redux";
 
 
 class JobForm extends React.Component {
@@ -14,9 +17,17 @@ class JobForm extends React.Component {
             location: props.job.location,
             description: props.job.description,
             status: props.job.status,
+            file: null,
         }; 
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleFileUpload = this.handleFileUpload.bind(this);
+    }
+
+    handleFileUpload(event){
+        event.preventDefault();
+        const file = event.target.files[0];
+        this.props.uploadFile(file);
     }
 
     handleSubmit(event){
@@ -27,7 +38,8 @@ class JobForm extends React.Component {
             title: data.get("title"),
             location: data.get("location"),
             description: data.get("description"),
-            status: data.get("status")
+            status: data.get("status"),
+            fileName: this.props.fileUploaded ? this.props.fileUploaded.filename : "",
         });
     }
     
@@ -72,6 +84,15 @@ class JobForm extends React.Component {
                         onChange={(event) => this.setState({ status: event.target.value})}
                         // error={errors.author}
                     />
+
+                     <FileInput
+                        name="document"
+                        label="Document"
+                        onChange={this.handleFileUpload}
+                        // onChange={(event) =>  this.setState({file: event.target.files[0]})}
+                        // error={errors.category}
+                    />
+
                     <button type="submit" className="btn btn-primary">
                         {"Save"}
                     </button>                              
@@ -82,4 +103,17 @@ class JobForm extends React.Component {
 
 }
 
-export default JobForm;
+const mapStateToProps  = state => {
+    return {
+        fileUploaded: state.fileUpload.file,
+    }
+};
+const mapDispatchToProps  =  {
+    uploadFile,
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(JobForm);
+  
