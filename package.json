@@ -26,7 +26,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "startServer": "node server/server.js",
-    "build:production": "env-cmd -f .env.production npm run build"
+    "deploy:frontend": "./tools/deploy_frontend.sh",
+    "deploy:backend": "./tools/deploy_backend.sh"
   },
   "eslintConfig": {
     "extends": "react-app"
