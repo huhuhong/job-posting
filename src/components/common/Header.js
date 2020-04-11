@@ -1,16 +1,16 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout }  from "../../actions/accountActions";
 import { toast } from "react-toastify";
 
-export function Header ( { account, logout } ) {
+export function Header ( { account, logout, history} ) {
 
   async function onLogout(){
-    debugger;
     const result = await logout();
     if(result) {
       toast.success("Logout succesful");
+      history.push("/");
     }
   }
 
@@ -42,8 +42,8 @@ const mapDispatchToProps = {
   logout,
 };
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Header);
+)(Header));
 

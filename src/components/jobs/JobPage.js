@@ -30,7 +30,7 @@ class JobPage extends React.Component {
                 Post Job
                 </button>
                 )}        
-                <JobList jobs={this.props.jobs}/>
+                <JobList jobs={this.props.jobs} enabledEdit={isLogin}/>
             </>
         )
     }
