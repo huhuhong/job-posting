@@ -13,6 +13,7 @@ const JobList = ( { jobs } ) => (
         <th>Description</th>
         <th>Posting Date</th>
         <th>Status</th>
+        <th>New Changes</th>
         <th></th>
         <th />
       </tr>
