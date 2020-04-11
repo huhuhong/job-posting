@@ -28,21 +28,29 @@ jobs:
     - run: yarn install
     - run: yarn test
     - run: yarn build
-    - name: SSH Commands
-      uses: appleboy/ssh-action@v0.0.7
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        script: whoami
-    - name: SCP Files
+    - name: Upload Frontend
       uses: appleboy/scp-action@v0.0.7         
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-        source: "build/*"
-        target: "temp/deploy/frontend"
+        source: "./build/*"
+        target: "/tmp/deploy/frontend"
+    - name: Upload Backend
+      uses: appleboy/scp-action@v0.0.7         
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        source: "./server/*"
+        target: "/tmp/deploy/backend"
+    - name: Reload Backend
+      uses: appleboy/ssh-action@v0.0.7
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        script: cd /tmp/deploy/backend/ && sudo npm install && sudo pm2 restart server
     - name: Archive production artifacts
       uses: actions/upload-artifact@v1
       with:
