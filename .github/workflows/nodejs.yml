@@ -42,7 +42,7 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-        source: "./server/*"
+        source: "server/server.js,server/package.json"
         target: "/tmp/deploy/backend"
     - name: Reload Backend
       uses: appleboy/ssh-action@v0.0.7
