@@ -24,8 +24,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: GitHub Action for Yarn
-      uses: Borales/actions-yarn@v2.1.0
+    - run: npm install -g yarn
     - run: yarn test
     - run: yarn build
     - name: Archive production artifacts
@@ -33,5 +32,12 @@ jobs:
       with:
         name: dist
         path: build
+    - name: SSH Commands
+      uses: appleboy/ssh-action@v0.0.2
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        script: whoami      
       env:
         CI: true
