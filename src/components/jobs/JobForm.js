@@ -18,11 +18,29 @@ class JobForm extends React.Component {
             description: props.job.description,
             status: props.job.status,
             file: null,
+            errors: {},
         }; 
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFileUpload = this.handleFileUpload.bind(this);
+        this.formIsValid = this.formIsValid.bind(this);
     }
+
+
+  formIsValid() {
+    const { title, location, description } = this.state;
+    const errors = {};
+
+    if (!title) errors.title = "Title is required.";
+    if (!location) errors.location = "Location is required";
+    if (!description) errors.description = "Description is required";
+
+    this.setState({
+        errors
+    })
+    // Form is valid if the errors object still has no properties
+    return Object.keys(errors).length === 0;
+  }
 
     handleFileUpload(event){
         event.preventDefault();
@@ -32,18 +50,21 @@ class JobForm extends React.Component {
 
     handleSubmit(event){
         event.preventDefault();
-        const data = new FormData(event.target);
-        this.props.onSubmit({
-            id: this.state.id,
-            title: data.get("title"),
-            location: data.get("location"),
-            description: data.get("description"),
-            status: data.get("status"),
-            fileName: this.props.fileUploaded ? this.props.fileUploaded.filename : "",
-        });
+        if(this.formIsValid()) {
+            this.props.onSubmit({
+                id: this.state.id,
+                title: this.state.title,
+                location: this.state.location,
+                description: this.state.description,
+                status: this.state.status,
+                fileName: this.props.fileUploaded ? this.props.fileUploaded.filename : "",
+            });
+        }
     }
     
     render() {
+        const { errors } = this.state;
+
         return (
             <form onSubmit={this.handleSubmit}>
                 <h2>{this.props.job.id ? "Edit" : "Add"} Job</h2>
@@ -53,7 +74,7 @@ class JobForm extends React.Component {
                         label="Title"
                         value={this.state.title}
                         onChange={(event) => this.setState({ title: event.target.value})}
-                        // error={errors.title}
+                        error={errors.title}
                     />
 
                     <TextInput
@@ -61,7 +82,7 @@ class JobForm extends React.Component {
                         label="Location"
                         value={this.state.location}
                         onChange={(event) => this.setState({ location: event.target.value})}
-                        // error={errors.category}
+                        error={errors.location}
                     />
 
                     <TextInput
@@ -69,7 +90,7 @@ class JobForm extends React.Component {
                         label="Description"
                         value={this.state.description}
                         onChange={(event) => this.setState({ description: event.target.value})}
-                        // error={errors.category}
+                        error={errors.description}
                     />
 
                     <SelectInput
@@ -82,15 +103,12 @@ class JobForm extends React.Component {
                             { value: "close", text: "Closed"},
                         ]}
                         onChange={(event) => this.setState({ status: event.target.value})}
-                        // error={errors.author}
                     />
 
                      <FileInput
                         name="document"
                         label="Document"
                         onChange={this.handleFileUpload}
-                        // onChange={(event) =>  this.setState({file: event.target.files[0]})}
-                        // error={errors.category}
                     />
 
                     <button type="submit" className="btn btn-primary">

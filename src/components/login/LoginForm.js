@@ -11,20 +11,39 @@ class LoginForm extends React.Component {
         this.state = {
             username: "admin",
             password: "admin",
+            errors:{},
         }; 
 
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    formIsValid() {
+        const { username, password } = this.state;
+        const errors = {};
+    
+        if (!username) errors.username = "Username is required.";
+        if (!password) errors.password = "Password is required";
+    
+        this.setState({
+            errors
+        })
+        // Form is valid if the errors object still has no properties
+        return Object.keys(errors).length === 0;
+      }
+    
+
     handleSubmit(event){
         event.preventDefault();
-        this.props.onLogin({
-            username: this.state.username,
-            password: this.state.password,
-        });
+        if(this.formIsValid()){
+            this.props.onLogin({
+                username: this.state.username,
+                password: this.state.password,
+            });
+        }
     }
 
     render(){
+        const { errors } = this.state;
 
         return (
             <form onSubmit={this.handleSubmit}>
@@ -33,14 +52,14 @@ class LoginForm extends React.Component {
                 label="Username"
                 value={this.state.username}
                 onChange={(event) => this.setState({ username: event.target.value})}
-                // error={errors.username}
+                error={errors.username}
             />
             <TextInput
                 name="password"
                 label="Password"
                 value={this.state.password}
                 onChange={(event) => this.setState({ password: event.target.value})}
-                // error={errors.password}
+                error={errors.password}
                 password
             />
                     <button type="submit" className="btn btn-primary">
