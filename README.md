@@ -35,11 +35,12 @@ http://localhost:3001/jobs to view sample data in the browser.
 
 ### `yarn deploy:frontend`
 
-**Note: always run yarn build in order to deploy latest app changes**
+**Note: pem file not check-in for security purpose, always run yarn build in order to deploy latest app changes**
 
 Copy ./build folder and upload to AWS EC2 instance
 
 
 ### `yarn deploy:backend`
+**Note: pem file not check-in for security purpose,
 
 Copy ./server folder and upload to aws ec2 instance and perform pm2 restart
