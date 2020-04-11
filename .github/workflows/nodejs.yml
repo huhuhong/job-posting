@@ -28,17 +28,25 @@ jobs:
     - run: yarn install
     - run: yarn test
     - run: yarn build
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@v1
-      with:
-        name: dist
-        path: build
     - name: SSH Commands
       uses: appleboy/ssh-action@v0.0.7
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-        script: whoami      
+        script: whoami
+    - name: SCP Files
+      uses: appleboy/scp-action@v0.0.7         
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        source: "build/*"
+        target: "temp/deploy/frontend"
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: dist
+        path: build
       env:
         CI: true
